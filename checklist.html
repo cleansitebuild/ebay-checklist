@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your eBay Listing Checklist — Kylan Jari</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0b;
+      color: #fafafa;
+      padding: 32px 16px 80px;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; }
+
+    /* Header */
+    .doc-header {
+      text-align: center;
+      margin-bottom: 48px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid #27272a;
+    }
+    .doc-logo { font-size: 0.85rem; color: #71717a; margin-bottom: 16px; }
+    .doc-logo span { color: #f87171; font-weight: 600; }
+    .doc-header h1 {
+      font-size: clamp(1.5rem, 4vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .doc-header h1 em { font-style: normal; color: #f87171; }
+    .doc-header p { font-size: 0.9rem; color: #71717a; }
+    .welcome-msg { font-size: 0.95rem; color: #a1a1aa; margin-top: 10px; }
+    .welcome-msg span { color: #fafafa; font-weight: 600; }
+
+    /* Print button */
+    .print-bar {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    .btn-print {
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: 1px solid #27272a;
+      background: #111113;
+      color: #a1a1aa;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: inherit;
+      transition: all 0.15s;
+    }
+    .btn-print:hover { color: #fafafa; border-color: #3f3f46; }
+    .btn-cta {
+      padding: 9px 18px;
+      border-radius: 8px;
+      border: none;
+      background: #8b0a1a;
+      color: #fff;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      font-family: inherit;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* Checklist item */
+    .item {
+      background: #111113;
+      border: 1px solid #27272a;
+      border-radius: 14px;
+      padding: 22px;
+      margin-bottom: 12px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: start;
+      transition: border-color 0.15s;
+    }
+    .item:hover { border-color: #3f3f46; }
+    .item.checked { border-color: rgba(34,197,94,0.3); background: rgba(34,197,94,0.04); }
+
+    .item-num {
+      width: 32px;
+      height: 32px;
+      background: rgba(139,10,26,0.15);
+      border: 1px solid rgba(139,10,26,0.2);
+      color: #f87171;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .item.checked .item-num {
+      background: rgba(34,197,94,0.12);
+      border-color: rgba(34,197,94,0.2);
+      color: #22c55e;
+    }
+
+    .item-body {}
+    .item-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    .item-problem {
+      font-size: 0.82rem;
+      color: #f87171;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+    .item-fix {
+      font-size: 0.85rem;
+      color: #a1a1aa;
+      line-height: 1.6;
+    }
+    .item-fix strong { color: #fafafa; }
+    .item-action {
+      margin-top: 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #22c55e;
+      background: rgba(34,197,94,0.08);
+      border: 1px solid rgba(34,197,94,0.15);
+      padding: 5px 10px;
+      border-radius: 6px;
+      display: inline-block;
+    }
+
+    .checkbox {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #27272a;
+      border-radius: 6px;
+      cursor: pointer;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+      margin-top: 5px;
+    }
+    .checkbox:hover { border-color: #22c55e; }
+    .checkbox.done { background: #22c55e; border-color: #22c55e; }
+    .checkbox.done::after { content: '✓'; color: #fff; font-size: 0.75rem; font-weight: 700; }
+
+    /* Progress */
+    .progress-bar-wrap {
+      background: #111113;
+      border: 1px solid #27272a;
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
+    }
+    .progress-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .progress-header span { font-size: 0.82rem; color: #71717a; }
+    .progress-header strong { font-size: 0.9rem; font-weight: 700; color: #22c55e; }
+    .progress-track { height: 6px; background: #27272a; border-radius: 99px; overflow: hidden; }
+    .progress-fill { height: 100%; background: #22c55e; border-radius: 99px; transition: width 0.3s ease; }
+
+    /* CTA */
+    .cta-box {
+      background: rgba(139,10,26,0.1);
+      border: 1px solid rgba(139,10,26,0.2);
+      border-radius: 14px;
+      padding: 28px;
+      text-align: center;
+      margin-top: 40px;
+    }
+    .cta-box h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+    .cta-box p { font-size: 0.875rem; color: #a1a1aa; margin-bottom: 18px; line-height: 1.6; }
+
+    @media print {
+      body { background: #fff; color: #000; padding: 20px; }
+      .print-bar, .checkbox, .progress-bar-wrap { display: none; }
+      .item { background: #f9f9f9; border-color: #ddd; break-inside: avoid; }
+      .item-fix { color: #444; }
+      .item-problem { color: #c00; }
+      .item-num { background: #fee2e2; color: #c00; border-color: #fca5a5; }
+      .cta-box { background: #f0f0f0; border-color: #ccc; }
+      .cta-box p, .cta-box h3 { color: #000; }
+      .btn-cta { display: none; }
+      .doc-header p, .doc-logo, .welcome-msg { color: #666; }
+    }
+  </style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="doc-header">
+    <div class="doc-logo">Kylan<span>Jari</span>.com</div>
+    <h1>10 eBay Listing Mistakes<br><em>Costing You Sales</em></h1>
+    <p>Free Checklist — UK eBay Sellers Edition · 2026</p>
+    <p class="welcome-msg" id="welcome-msg"></p>
+  </div>
+
+  <div class="print-bar">
+    <button class="btn-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+    <a href="index.html" class="btn-cta">← Back</a>
+  </div>
+
+  <!-- Progress -->
+  <div class="progress-bar-wrap">
+    <div class="progress-header">
+      <span>Your progress</span>
+      <strong id="progress-text">0 / 10 fixed</strong>
+    </div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+    </div>
+  </div>
+
+  <!-- Checklist items -->
+  <div id="checklist"></div>
+
+  <!-- CTA -->
+  <div class="cta-box">
+    <h3>Want someone to fix all of this for you?</h3>
+    <p>I audit and manage eBay stores for UK sellers — listings, account health, customer service, pricing. If you'd rather spend time on your business than on eBay admin, let's talk.</p>
+    <a href="mailto:kylanjari@gmail.com" class="btn-cta">📧 Email Kylan — kylanjari@gmail.com</a>
+  </div>
+
+</div>
+
+<script>
+const ITEMS = [
+  {
+    title: "Title Not Optimised for Cassini",
+    problem: "❌ You're not using all 80 characters — eBay's search engine rewards keyword-dense titles",
+    fix: "Include the <strong>brand, model, size, colour, condition</strong> and what it actually <em>is</em>. Research what buyers search for using eBay's search bar suggestions. Use all 80 characters.",
+    action: "✅ Action: Rewrite your 5 lowest-converting listings with full 80-character titles"
+  },
+  {
+    title: "Item Specifics Left Blank",
+    problem: "❌ Blank item specifics make your listing invisible in filtered searches",
+    fix: "Fill in <strong>every item specific eBay suggests</strong>, even if it seems irrelevant. Buyers filter by these fields — if you haven't filled them in, you don't appear in the results.",
+    action: "✅ Action: Go to each listing → Edit → fill in all item specifics completely"
+  },
+  {
+    title: "Poor Quality or Wrong Photos",
+    problem: "❌ Dark, blurry, or single-angle photos kill trust before the buyer reads a word",
+    fix: "Use <strong>natural daylight or a lightbox</strong>. Shoot from multiple angles (front, back, sides, close-ups). Show any defects honestly — it reduces returns and negative feedback. White or neutral backgrounds only.",
+    action: "✅ Action: Reshoot your 3 most important listings with at least 5 photos each"
+  },
+  {
+    title: "Wrong Category",
+    problem: "❌ Miscategorised listings are penalised by Cassini and compete in the wrong buyer pool",
+    fix: "Search for similar items on eBay and see what category the <strong>top sellers use</strong>. When in doubt, pick the most specific sub-category available — broader categories have more competition.",
+    action: "✅ Action: Check your top 10 listings match the category used by highest-converting competitors"
+  },
+  {
+    title: "No Returns Policy",
+    problem: "❌ 'No returns' listings rank lower and convert worse — buyers don't trust them",
+    fix: "Enable <strong>30-day returns (buyer pays postage)</strong> at minimum. Sellers with a returns policy get a visibility boost from eBay. In practice, returns are rare for well-described items.",
+    action: "✅ Action: Update your store's default returns policy to 30 days buyer-pays"
+  },
+  {
+    title: "Ignoring Account Health",
+    problem: "❌ Below Standard status can cut your visibility by up to 80% overnight",
+    fix: "Check your <strong>Seller Dashboard weekly</strong>. Monitor: defect rate (keep under 0.5%), late shipment rate (under 3%), cases closed without resolution (under 0.3%). Set calendar reminders.",
+    action: "✅ Action: Open Seller Hub → Performance → check your current status right now"
+  },
+  {
+    title: "Pricing Without Research",
+    problem: "❌ Guessing your price means you're either leaving money on the table or pricing yourself out",
+    fix: "Before listing anything, check <strong>Sold Items</strong> (filter on the left) to see what buyers actually paid, not just what sellers are asking. Price 5–10% below average sold price to move stock faster.",
+    action: "✅ Action: For your 5 slowest-moving listings, check sold prices and adjust"
+  },
+  {
+    title: "Wasting Promoted Listings Budget",
+    problem: "❌ Most sellers promote everything at a flat rate — this burns budget with no strategy",
+    fix: "Only promote <strong>items with proven demand</strong> (things that sell without promotion first). Start at the minimum ad rate (2%), track impressions vs. clicks, increase only if ROI justifies it.",
+    action: "✅ Action: Review your current promoted listings — pause any that haven't converted in 30 days"
+  },
+  {
+    title: "Description That Lists Features, Not Benefits",
+    problem: "❌ 'Blue, 5kg, 45cm' tells buyers nothing about why they should buy it",
+    fix: "Rewrite descriptions to answer: <strong>who is this for, what problem does it solve, why buy from you</strong>. Keep it scannable — short paragraphs, bullet points for specs. End with a clear call to action.",
+    action: "✅ Action: Rewrite 3 descriptions focusing on 'what this means for you' not just specs"
+  },
+  {
+    title: "Slow Dispatch & No Tracking Updates",
+    problem: "❌ Late dispatch directly impacts your Late Shipment Rate — a key account health metric",
+    fix: "Commit only to dispatch times you can actually hit. <strong>Upload tracking numbers immediately</strong> after posting — eBay uses this data for your metrics. Communicate proactively if there's any delay.",
+    action: "✅ Action: Set a realistic handling time in your listings, then stick to it every single time"
+  }
+];
+
+const saved = JSON.parse(localStorage.getItem('checklist_state') || '{}');
+let checked = { ...saved };
+
+function render() {
+  const el = document.getElementById('checklist');
+  el.innerHTML = ITEMS.map((item, i) => {
+    const done = !!checked[i];
+    return `
+      <div class="item ${done ? 'checked' : ''}" id="item-${i}">
+        <div class="item-num">${String(i+1).padStart(2,'0')}</div>
+        <div class="item-body">
+          <div class="item-title">${item.title}</div>
+          <div class="item-problem">${item.problem}</div>
+          <div class="item-fix">${item.fix}</div>
+          <div class="item-action">${item.action}</div>
+        </div>
+        <div class="checkbox ${done ? 'done' : ''}" onclick="toggle(${i})" title="Mark as fixed"></div>
+      </div>`;
+  }).join('');
+  updateProgress();
+}
+
+function toggle(i) {
+  checked[i] = !checked[i];
+  localStorage.setItem('checklist_state', JSON.stringify(checked));
+  render();
+}
+
+function updateProgress() {
+  const count = Object.values(checked).filter(Boolean).length;
+  document.getElementById('progress-text').textContent = count + ' / 10 fixed';
+  document.getElementById('progress-fill').style.width = (count * 10) + '%';
+}
+
+// Welcome message
+const params = new URLSearchParams(window.location.search);
+const name = params.get('name');
+if (name) {
+  document.getElementById('welcome-msg').innerHTML = `Here you go, <span>${name}</span> — work through each one and tick it off as you fix it.`;
+} else {
+  document.getElementById('welcome-msg').innerHTML = `Work through each one and tick it off as you go.`;
+}
+
+render();
+</script>
+</body>
+</html>
